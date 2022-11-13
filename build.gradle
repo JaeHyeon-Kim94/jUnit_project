@@ -31,3 +31,7 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+//배포 목적 추가
+jar {
+    enabled = false
+}
