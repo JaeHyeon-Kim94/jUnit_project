@@ -86,6 +86,27 @@ public class BookRepositoryTest {
 
     @Sql("classpath:db/tableInit.sql")
     @Test
+    public void 책_수정_테스트(){
+        //given
+        Long id = 1L;
+        String title = "junit5";
+        String author = "재현";
+        Book book = new Book(id, title, author);
+        //when
+        Book bookPS = repository.save(book);
+
+        repository.findAll().stream()
+                .forEach(System.out::println);
+
+        //then
+        assertEquals(id, bookPS.getId());
+        assertEquals(title, bookPS.getTitle());
+        assertEquals(author, bookPS.getAuthor());
+
+    }
+
+    @Sql("classpath:db/tableInit.sql")
+    @Test
     public void 책_삭제_테스트(){
         //given
         Long id = 1L;

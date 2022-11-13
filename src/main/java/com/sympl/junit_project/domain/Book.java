@@ -3,12 +3,14 @@ package com.sympl.junit_project.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 
 @Getter
 @NoArgsConstructor
+@ToString
 @Entity
 public class Book {
 
