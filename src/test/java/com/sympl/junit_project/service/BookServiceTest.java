@@ -1,5 +1,6 @@
 package com.sympl.junit_project.service;
 
+import com.sympl.junit_project.domain.Book;
 import com.sympl.junit_project.domain.BookRepository;
 import com.sympl.junit_project.util.MailSender;
 import com.sympl.junit_project.web.dto.BookRequestSaveDto;
@@ -10,6 +11,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.assertj.core.api.Assertions.*;
@@ -55,5 +60,63 @@ public class BookServiceTest {
         assertThat(bookResponseDto.getTitle()).isEqualTo(dto.getTitle());
         assertThat(bookResponseDto.getAuthor()).isEqualTo(dto.getAuthor());
 
+    }
+
+    @Test
+    public void 책_목록보기_테스트(){
+        //given
+
+        //stub
+        List<Book> books = Arrays.asList(
+                new Book(1L, "junit1", "재현1"),
+                new Book(2L, "junit2", "재현2")
+        );
+        when(repository.findAll()).thenReturn(books);
+
+        //when
+        List<BookResponseDto> dtos = service.selectBookList();
+        dtos.stream().forEach(System.out::println);
+
+        //then
+        assertThat(dtos.get(0).getTitle()).isEqualTo("junit1");
+    }
+
+    @Test
+    public void 책_한권_보기_테스트(){
+        //given
+        Long id = 1L;
+        Book book = new Book(id, "junit", "재현");
+        Optional<Book> bookOp = Optional.of(book);
+
+        //stub
+        when(repository.findById(id)).thenReturn(bookOp);
+
+        //when
+        BookResponseDto dto = service.selectBook(id);
+
+        //then
+        assertThat(dto.getTitle()).isEqualTo(book.getTitle());
+        assertThat(dto.getAuthor()).isEqualTo(book.getAuthor());
+    }
+
+    @Test
+    public void 책_수정하기_테스트(){
+        //given
+        Long id = 1L;
+        BookRequestSaveDto requestDto = new BookRequestSaveDto();
+        requestDto.setTitle("수정된_junit강의");
+        requestDto.setAuthor("수정된_재현");
+
+        //stub
+        Book book = new Book(1L, "junit강의", "재현");
+        Optional<Book> bookOp = Optional.of(book);
+        when(repository.findById(id)).thenReturn(bookOp);
+
+        //when
+        BookResponseDto updatedDto = service.updateBook(id, requestDto);
+
+        //then
+        assertThat(updatedDto.getTitle()).isEqualTo(requestDto.getTitle());
+        assertThat(updatedDto.getAuthor()).isEqualTo(requestDto.getAuthor());
     }
 }

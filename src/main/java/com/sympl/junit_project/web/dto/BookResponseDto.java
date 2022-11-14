@@ -16,4 +16,13 @@ public class BookResponseDto {
         dto.author = bookPs.getAuthor();
         return dto;
     }
+
+    @Override
+    public String toString() {
+        return "BookResponseDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
 }
