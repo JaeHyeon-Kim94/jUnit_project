@@ -3,14 +3,15 @@ package com.sympl.junit_project.service;
 import com.sympl.junit_project.domain.Book;
 import com.sympl.junit_project.domain.BookRepository;
 import com.sympl.junit_project.util.MailSender;
-import com.sympl.junit_project.web.dto.BookRequestSaveDto;
-import com.sympl.junit_project.web.dto.BookResponseDto;
+import com.sympl.junit_project.web.dto.request.BookRequestSaveDto;
+import com.sympl.junit_project.web.dto.response.BookListResponseDto;
+import com.sympl.junit_project.web.dto.response.BookResponseDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +31,7 @@ import static org.mockito.Mockito.when;
 //Mockito -> 가짜 객체를 보관하는 환경.
 
 @ExtendWith(MockitoExtension.class) //가짜 환경 만들어짐.
+@ActiveProfiles("dev")
 public class BookServiceTest {
 
     @InjectMocks    //해당 클래스에서 가지고 있는 의존성(repository, mailsender)들을
@@ -74,11 +76,10 @@ public class BookServiceTest {
         when(repository.findAll()).thenReturn(books);
 
         //when
-        List<BookResponseDto> dtos = service.selectBookList();
-        dtos.stream().forEach(System.out::println);
+        BookListResponseDto dtos = service.selectBookList();
 
         //then
-        assertThat(dtos.get(0).getTitle()).isEqualTo("junit1");
+        assertThat(dtos.getItems().get(0).getTitle()).isEqualTo("junit1");
     }
 
     @Test

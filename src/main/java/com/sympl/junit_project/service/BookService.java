@@ -3,8 +3,9 @@ package com.sympl.junit_project.service;
 import com.sympl.junit_project.domain.Book;
 import com.sympl.junit_project.domain.BookRepository;
 import com.sympl.junit_project.util.MailSender;
-import com.sympl.junit_project.web.dto.BookRequestSaveDto;
-import com.sympl.junit_project.web.dto.BookResponseDto;
+import com.sympl.junit_project.web.dto.request.BookRequestSaveDto;
+import com.sympl.junit_project.web.dto.response.BookListResponseDto;
+import com.sympl.junit_project.web.dto.response.BookResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,10 +40,14 @@ public class BookService {
 
 
     //책 목록보기
-    public List<BookResponseDto> selectBookList(){
-        return repository.findAll().stream()
+    public BookListResponseDto selectBookList(){
+        List<BookResponseDto> dtos = repository.findAll().stream()
                 .map(BookResponseDto::toDto)
                 .collect(Collectors.toList());
+
+        BookListResponseDto listDto = BookListResponseDto.builder().items(dtos).build();
+
+        return listDto;
     }
 
     //책 한권 보기

@@ -17,6 +17,7 @@ public class Book {
     @Id @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
 
+    //empty string도 허용하지 않기 위해서는 @Convert 필요.
     @Column( length = 50, nullable = false )
     private String title;
     @Column( length = 20, nullable = false )

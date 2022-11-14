@@ -1,4 +1,4 @@
-package com.sympl.junit_project.web.dto;
+package com.sympl.junit_project.web.dto.response;
 
 import com.sympl.junit_project.domain.Book;
 import lombok.Getter;
